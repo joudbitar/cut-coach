@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cut Coach
 
-## Getting Started
+A single-user, PWA-installable mobile web app for running an aggressive-but-smart
+cut: **Nutrition**, **Progress**, and **Training**. Next.js (App Router) + Supabase.
 
-First, run the development server:
+- **Today** — free-text meal logging (macros stay *pending* until enriched), kcal +
+  protein rings, remaining macros, snack budget.
+- **Log** — meal history by day + a *pending enrichment* view.
+- **Progress** — morning weight with a 7-day rolling-average trend + week-over-week
+  slope and control-loop guidance; waist/neck → Navy BF%; weekly progress photos.
+- **Train** — seeded 4-day Upper/Lower retention split; start a session, log
+  sets (weight/reps/RPE), per-exercise overload cues, workout history.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Locked behind a single **PIN**.
+
+## Env
+
+`.env.local` (already wired into Vercel):
+
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+SUPABASE_SERVICE_ROLE_KEY=...   # server-only, full DB access behind the PIN
+APP_PIN_HASH=...                # sha256 of the PIN
+SESSION_SECRET=...              # signs the session cookie
+APP_TZ=Asia/Beirut              # owner-local day boundaries (optional)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Change the PIN: `node -e "console.log(require('crypto').createHash('sha256').update('NEWPIN').digest('hex'))"`
+then update `APP_PIN_HASH` locally and in Vercel.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Run locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+npm install
+npm run dev
+```
 
-## Learn More
+## Enrich macros (in Claude Code)
 
-To learn more about Next.js, take a look at the following resources:
+There is no in-app LLM tonight, so meals save raw text with macros `null`
+("pending"). To fill them, open this project in Claude Code and:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **List pending meals:** `node scripts/list-pending.mjs` -> prints JSON of
+   `{id, date, slot, text}` for every meal missing macros.
+2. **Ask the AI to estimate** kcal / protein / fat / carb / fiber for each `text`.
+3. **Write them back**, either one at a time:
+   `node scripts/enrich.mjs <id> <kcal> <protein> <fat> <carb> <fiber>`
+   or in bulk: `echo '[{"id":"...","kcal":330,"protein":52,"fat":9,"carb":6,"fiber":2}]' | node scripts/enrich.mjs --json`
+4. Reload the app — the entries leave the *pending* view and the rings update.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+(The schema keeps macro columns nullable so an in-app AI estimate can be switched
+on later by adding an LLM key — no migration needed.)
