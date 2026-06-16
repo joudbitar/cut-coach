@@ -4,37 +4,44 @@ export default function Ring({
   label,
   unit,
   color = "var(--accent)",
+  size = 108,
 }: {
   value: number;
   target: number;
   label: string;
   unit: string;
   color?: string;
+  size?: number;
 }) {
-  const r = 42;
+  // Geometry scales with size so the hero can request a slimmer secondary ring.
+  const stroke = Math.round(size * 0.093); // 10 at 108
+  const r = (size - stroke) / 2 - 4;
+  const cx = size / 2;
   const c = 2 * Math.PI * r;
   const pct = target > 0 ? Math.min(value / target, 1) : 0;
   const remaining = Math.max(target - value, 0);
+  const valueFont = Math.round(size * 0.185); // 20 at 108
+  const subFont = Math.max(10, Math.round(size * 0.102)); // 11 at 108
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
-      <svg width={108} height={108} viewBox="0 0 108 108">
-        <circle cx={54} cy={54} r={r} fill="none" stroke="var(--border)" strokeWidth={10} />
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle cx={cx} cy={cx} r={r} fill="none" stroke="var(--border)" strokeWidth={stroke} />
         <circle
-          cx={54}
-          cy={54}
+          cx={cx}
+          cy={cx}
           r={r}
           fill="none"
           stroke={color}
-          strokeWidth={10}
+          strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={c}
           strokeDashoffset={c * (1 - pct)}
-          transform="rotate(-90 54 54)"
+          transform={`rotate(-90 ${cx} ${cx})`}
         />
-        <text x={54} y={50} textAnchor="middle" fontSize={20} fontWeight={700} fill="var(--fg)">
+        <text x={cx} y={cx - 4} textAnchor="middle" fontSize={valueFont} fontWeight={700} fill="var(--fg)" style={{ fontVariantNumeric: "tabular-nums" }}>
           {Math.round(value)}
         </text>
-        <text x={54} y={68} textAnchor="middle" fontSize={11} fill="var(--muted)">
+        <text x={cx} y={cx + valueFont * 0.7} textAnchor="middle" fontSize={subFont} fill="var(--muted)">
           / {target} {unit}
         </text>
       </svg>
