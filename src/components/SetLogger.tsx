@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { logSet, deleteSet } from "@/app/actions";
+import { useFormAction } from "@/hooks/useFormAction";
+import SubmitButton from "@/components/SubmitButton";
 
 type SetRow = { id: string; set_number: number; weight_kg: number | null; reps: number | null; rpe: number | null };
 
@@ -16,8 +17,7 @@ export default function SetLogger({
   exerciseName: string;
   existing: SetRow[];
 }) {
-  const ref = useRef<HTMLFormElement>(null);
-  const [busy, setBusy] = useState(false);
+  const { formProps, busy } = useFormAction(logSet);
   const nextSet = existing.length + 1;
   const lastWeight = existing[existing.length - 1]?.weight_kg ?? "";
 
@@ -39,13 +39,7 @@ export default function SetLogger({
         </div>
       )}
       <form
-        ref={ref}
-        action={async (fd) => {
-          setBusy(true);
-          await logSet(fd);
-          ref.current?.reset();
-          setBusy(false);
-        }}
+        {...formProps}
         style={{ display: "flex", gap: 6, alignItems: "flex-end" }}
       >
         <input type="hidden" name="session_id" value={sessionId} />
@@ -64,7 +58,7 @@ export default function SetLogger({
           <div className="label" style={{ fontSize: 9 }}>RPE</div>
           <input className="input" name="rpe" inputMode="decimal" style={{ padding: "8px 6px", textAlign: "center" }} />
         </div>
-        <button className="btn" disabled={busy} style={{ width: "auto", padding: "10px 14px" }}>+{nextSet}</button>
+        <SubmitButton busy={busy} busyLabel={`+${nextSet}`} style={{ width: "auto", padding: "10px 14px" }}>+{nextSet}</SubmitButton>
       </form>
     </div>
   );
