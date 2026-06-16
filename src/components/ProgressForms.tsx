@@ -73,36 +73,116 @@ export function MeasurementForm() {
   );
 }
 
+// Downscale + re-encode to JPEG client-side so uploads stay small/fast and
+// stay under the Server Action body limit (also converts iOS HEIC -> JPEG).
+async function compressImage(file: File): Promise<File> {
+  if (!file.type.startsWith("image/") && !/\.(heic|heif)$/i.test(file.name)) return file;
+  try {
+    const dataUrl: string = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result as string);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+    const img: HTMLImageElement = await new Promise((res, rej) => {
+      const i = new Image();
+      i.onload = () => res(i);
+      i.onerror = rej;
+      i.src = dataUrl;
+    });
+    const max = 1280;
+    let { width, height } = img;
+    const longest = Math.max(width, height);
+    if (longest > max) {
+      const s = max / longest;
+      width = Math.round(width * s);
+      height = Math.round(height * s);
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(img, 0, 0, width, height);
+    const blob: Blob | null = await new Promise((res) => canvas.toBlob(res, "image/jpeg", 0.82));
+    if (!blob) return file;
+    const base = file.name.replace(/\.\w+$/, "") || "photo";
+    return new File([blob], `${base}.jpg`, { type: "image/jpeg" });
+  } catch {
+    return file; // fall back to the original; 8mb server limit covers it
+  }
+}
+
 export function PhotoForm() {
-  const ref = useRef<HTMLFormElement>(null);
+  const camRef = useRef<HTMLInputElement>(null);
+  const libRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
-  const [name, setName] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [error, setError] = useState("");
+
+  async function submit() {
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    try {
+      const compressed = await compressImage(file);
+      const fd = new FormData();
+      fd.set("taken_on", today());
+      fd.set("photo", compressed);
+      await addPhoto(fd);
+      setFile(null);
+      if (camRef.current) camRef.current.value = "";
+      if (libRef.current) libRef.current.value = "";
+    } catch (e) {
+      setError("Upload failed — try again.");
+      console.error(e);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
-    <form
-      ref={ref}
-      action={async (fd) => {
-        setBusy(true);
-        await addPhoto(fd);
-        ref.current?.reset();
-        setName("");
-        setBusy(false);
-      }}
-      style={{ display: "flex", flexDirection: "column", gap: 10 }}
-    >
-      <input type="hidden" name="taken_on" value={today()} />
-      <label className="btn-ghost" style={{ textAlign: "center", cursor: "pointer", padding: "14px" }}>
-        {name || "Choose progress photo"}
-        <input
-          type="file"
-          name="photo"
-          accept="image/*"
-          capture="environment"
-          required
-          style={{ display: "none" }}
-          onChange={(e) => setName(e.target.files?.[0]?.name ?? "")}
-        />
-      </label>
-      <button className="btn" disabled={busy || !name}>{busy ? "Uploading…" : "Upload photo"}</button>
-    </form>
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <input
+        ref={camRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        style={{ display: "none" }}
+        onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+      />
+      <input
+        ref={libRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+      />
+
+      {file ? (
+        <div className="chip" style={{ justifyContent: "space-between", padding: "10px 12px" }}>
+          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>📎 {file.name}</span>
+          <button type="button" className="btn-danger" style={{ padding: "2px 8px", fontSize: 12 }} onClick={() => setFile(null)}>
+            ✕
+          </button>
+        </div>
+      ) : (
+        <div style={{ display: "flex", gap: 8 }}>
+          <button type="button" className="btn" style={{ flex: 2 }} onClick={() => camRef.current?.click()}>
+            📷 Take photo
+          </button>
+          <button type="button" className="btn-ghost" style={{ flex: 1 }} onClick={() => libRef.current?.click()}>
+            Library
+          </button>
+        </div>
+      )}
+
+      {file && (
+        <button type="button" className="btn" disabled={busy} onClick={submit}>
+          {busy ? "Uploading…" : "Upload photo"}
+        </button>
+      )}
+      {error && <p style={{ color: "var(--danger)", fontSize: 13 }}>{error}</p>}
+    </div>
   );
 }
