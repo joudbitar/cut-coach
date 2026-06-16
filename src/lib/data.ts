@@ -93,38 +93,43 @@ export async function getMeasurements(): Promise<Measurement[]> {
 export async function getPhotos(): Promise<Photo[]> {
   const { data } = await db()
     .from("photos")
-    .select("*")
+    .select("id, taken_on, storage_path")
     .order("taken_on", { ascending: false });
   const photos = data ?? [];
   const client = db();
-  const withUrls: Photo[] = [];
-  for (const p of photos) {
-    const { data: signed } = await client.storage
-      .from(PHOTO_BUCKET)
-      .createSignedUrl(p.storage_path, 60 * 60);
-    withUrls.push({ ...p, url: signed?.signedUrl });
-  }
-  return withUrls;
+  return Promise.all(
+    photos.map(async (p) => {
+      const { data: signed } = await client.storage
+        .from(PHOTO_BUCKET)
+        .createSignedUrl(p.storage_path, 60 * 60);
+      return { ...p, url: signed?.signedUrl };
+    })
+  );
 }
 
 export async function getProgram(): Promise<ProgramDay[]> {
-  const { data: days } = await db()
+  const { data } = await db()
     .from("program_days")
-    .select("*")
+    .select("*, exercises(*)")
     .order("ord", { ascending: true });
-  const { data: exercises } = await db()
-    .from("exercises")
-    .select("*")
-    .order("ord", { ascending: true });
-  return (days ?? []).map((d) => ({
-    ...d,
-    exercises: (exercises ?? []).filter((e) => e.day_id === d.id),
+  return (data ?? []).map((d: any) => ({
+    id: d.id,
+    key: d.key,
+    name: d.name,
+    ord: d.ord,
+    exercises: (d.exercises ?? []).slice().sort((a: Exercise, b: Exercise) => a.ord - b.ord),
   }));
 }
 
 export async function getProgramDay(key: string): Promise<ProgramDay | null> {
-  const program = await getProgram();
-  return program.find((d) => d.key === key) ?? null;
+  const { data: day } = await db().from("program_days").select("*").eq("key", key).single();
+  if (!day) return null;
+  const { data: exercises } = await db()
+    .from("exercises")
+    .select("*")
+    .eq("day_id", day.id)
+    .order("ord", { ascending: true });
+  return { ...day, exercises: exercises ?? [] };
 }
 
 // Last-session top-set summary for the overload cue. Excludes the current
@@ -179,15 +184,13 @@ export async function getWorkoutHistory(): Promise<WorkoutHistoryRow[]> {
     .select("id, day_name, started_at, finished_at")
     .order("started_at", { ascending: false })
     .limit(50);
-  const result: WorkoutHistoryRow[] = [];
-  for (const s of sessions ?? []) {
-    const { count } = await db()
-      .from("set_logs")
-      .select("*", { count: "exact", head: true })
-      .eq("session_id", s.id);
-    result.push({ ...s, setCount: count ?? 0 });
-  }
-  return result;
+  const ids = (sessions ?? []).map((s) => s.id);
+  const { data: setRows } = ids.length
+    ? await db().from("set_logs").select("session_id").in("session_id", ids)
+    : { data: [] as { session_id: string }[] };
+  const counts = new Map<string, number>();
+  for (const r of setRows ?? []) counts.set(r.session_id, (counts.get(r.session_id) ?? 0) + 1);
+  return (sessions ?? []).map((s) => ({ ...s, setCount: counts.get(s.id) ?? 0 }));
 }
 
 export async function getSessionDetail(id: string) {
