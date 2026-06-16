@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post-Leg Day Recovery Stretches</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0f0f0f;
+    color: #f0f0f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 24px 16px 60px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 32px;
+  }
+
+  .stretch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #2a2a2a;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .step-num {
+    background: #e85d00;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .target-muscle {
+    font-size: 0.72rem;
+    color: #e85d00;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .figure-wrap {
+    background: #111;
+    border-radius: 12px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  svg.figure {
+    width: 100%;
+    height: 100%;
+  }
+
+  .duration {
+    font-size: 0.8rem;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .duration span {
+    background: #2a2a2a;
+    padding: 3px 10px;
+    border-radius: 20px;
+    color: #ccc;
+    font-weight: 600;
+  }
+
+  .tips {
+    font-size: 0.8rem;
+    color: #999;
+    line-height: 1.55;
+    border-top: 1px solid #2a2a2a;
+    padding-top: 10px;
+  }
+
+  /* ---- ANIMATIONS ---- */
+
+  /* 1. Quad stretch - standing, knee bent pulling up */
+  @keyframes quad {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-8deg); }
+  }
+  .anim-quad { animation: quad 2.5s ease-in-out infinite; transform-origin: bottom center; }
+  @keyframes quad-leg {
+    0%, 100% { d: path("M 80 130 Q 85 155 90 170"); }
+    50% { d: path("M 80 130 Q 75 120 72 108"); }
+  }
+
+  /* 2. Hip flexor lunge */
+  @keyframes lunge-sink {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(4px); }
+  }
+
+  /* 3. Forward fold */
+  @keyframes fold {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(55deg); }
+  }
+  .anim-fold { animation: fold 3s ease-in-out infinite; transform-origin: 50% 95px; }
+
+  /* 4. Figure-4 */
+  @keyframes figure4-rock {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-5deg); }
+  }
+  .anim-f4 { animation: figure4-rock 2.5s ease-in-out infinite; transform-origin: 50% 60%; }
+
+  /* 5. Supine hamstring */
+  @keyframes ham-raise {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-50deg); }
+  }
+  .anim-ham { animation: ham-raise 3s ease-in-out infinite; transform-origin: 80px 110px; }
+
+  /* 6. Child's pose */
+  @keyframes childs {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(1.04); }
+  }
+  .anim-childs { animation: childs 3s ease-in-out infinite; transform-origin: center; }
+
+  /* 7. Legs up wall */
+  @keyframes legs-up {
+    0%, 100% { transform: rotate(90deg); }
+    50% { transform: rotate(82deg); }
+  }
+  .anim-legs { animation: legs-up 3s ease-in-out infinite; transform-origin: 80px 110px; }
+</style>
+</head>
+<body>
+
+<h1>Post-Leg Day Recovery Stretches</h1>
+<p class="subtitle">After squats + RDLs · 45–60 sec each side · No bouncing</p>
+
+<div class="stretch-grid">
+
+  <!-- 1. STANDING QUAD STRETCH -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-num">1</div>
+      <div>
+        <h2>Standing Quad Stretch</h2>
+        <div class="target-muscle">Quadriceps</div>
+      </div>
+    </div>
+    <div class="figure-wrap">
+      <svg class="figure" viewBox="0 0 160 200">
+        <!-- body static -->
+        <circle cx="80" cy="30" r="14" fill="#e85d00"/>
+        <!-- torso -->
+        <line x1="80" y1="44" x2="80" y2="110" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+        <!-- arms out for balance -->
+        <line x1="80" y1="60" x2="48" y2="80" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+        <line x1="80" y1="60" x2="112" y2="80" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+        <!-- left leg straight -->
+        <line x1="80" y1="110" x2="68" y2="155" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+        <line x1="68" y1="155" x2="65" y2="182" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+        <!-- right leg bent (pulled back) -->
+        <line x1="80" y1="110" x2="92" y2="140" stroke="#e85d00" stroke-width="5" stroke-linecap="round"/>
+        <g class="anim-quad">
+          <line x1="92" y1="140" x2="88" y2="108" stroke="#e85d00" stroke-width="5" stroke-linecap="round"/>
+          <!-- hand holding ankle -->
+          <circle cx="88" cy="108" r="5" fill="#ccc"/>
+          <line x1="112" y1="80" x2="88" y2="108" stroke="#ccc" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 3"/>
+        </g>
+      </svg>
+    </div>
+    <div class="duration">Hold: <span>45–60 sec / side</span></div>
+    <p class="tips">Pull ankle to glute, keep knees together. Hold a wall if you wobble. Feel it deep in the front of the thigh.</p>
+  </div>
+
+  <!-- 2. HIP FLEXOR LUNGE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-num">2</div>
+      <div>
+        <h2>Hip Flexor Lunge Stretch</h2>
+        <div class="target-muscle">Hip Flexors · Psoas</div>
+      </div>
+    </div>
+    <div class="figure-wrap">
+      <svg class="figure" viewBox="0 0 160 200">
+        <circle cx="80" cy="28" r="13" fill="#e85d00"/>
+        <!-- torso upright -->
+        <line x1="80" y1="41" x2="80" y2="100" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+        <!-- arms on knee for balance -->
+        <line x1="80" y1="60" x2="60" y2="78" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+        <line x1="80" y1="60" x2="100" y2="78" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+        <!-- front leg (knee up ~90) -->
+        <line x1="75" y1="100" x2="52" y2="140" stroke="#e85d00" stroke-width="5" stroke-linecap="round"/>
+        <line x1="52" y1="140" x2="38" y2="175" stroke="#e85d00" stroke-width="5" stroke-linecap="round"/>
+        <!-- back leg (knee on floor) -->
+        <g class="anim-quad" style="transform-origin:90px 100px">
+          <line x1="85" y1="100" x2="112" y2="145" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+          <line x1="112" y1="145" x2="122" y2="178" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <!-- floor -->
+        <line x1="20" y1="183" x2="140" y2="183" stroke="#444" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="duration">Hold: <span>45–60 sec / side</span></div>
+    <p class="tips">Back knee on floor, sink hips forward and down. Keep torso tall. You'll feel this at the front of the back hip.</p>
+  </div>
+
+  <!-- 3. STANDING FORWARD FOLD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-num">3</div>
+      <div>
+        <h2>Standing Forward Fold</h2>
+        <div class="target-muscle">Hamstrings · Lower Back</div>
+      </div>
+    </div>
+    <div class="figure-wrap">
+      <svg class="figure" viewBox="0 0 160 200">
+        <!-- legs static -->
+        <line x1="72" y1="120" x2="68" y2="175" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+        <line x1="88" y1="120" x2="92" y2="175" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+        <line x1="60" y1="175" x2="80" y2="175" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+        <line x1="82" y1="175" x2="102" y2="175" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+        <!-- torso folding down -->
+        <g class="anim-fold">
+          <circle cx="80" cy="88" r="13" fill="#e85d00"/>
+          <line x1="80" y1="101" x2="80" y2="120" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+          <!-- arms hang -->
+          <line x1="80" y1="108" x2="62" y2="128" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+          <line x1="80" y1="108" x2="98" y2="128" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <!-- floor -->
+        <line x1="20" y1="183" x2="140" y2="183" stroke="#444" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="duration">Hold: <span>45–60 sec</span></div>
+    <p class="tips">Feet hip-width, soft knees. Let gravity do the work — just hang. Decompresses spine and releases hamstrings passively.</p>
+  </div>
+
+  <!-- 4. FIGURE-4 / PIGEON -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-num">4</div>
+      <div>
+        <h2>Figure-4 Stretch</h2>
+        <div class="target-muscle">Glutes · Piriformis</div>
+      </div>
+    </div>
+    <div class="figure-wrap">
+      <svg class="figure" viewBox="0 0 160 200">
+        <g class="anim-f4">
+          <!-- seated figure -->
+          <circle cx="80" cy="55" r="13" fill="#e85d00"/>
+          <!-- torso leaning back slightly -->
+          <line x1="80" y1="68" x2="80" y2="115" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+          <!-- arms back for support -->
+          <line x1="80" y1="80" x2="50" y2="105" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+          <line x1="80" y1="80" x2="110" y2="105" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+          <!-- right leg straight -->
+          <line x1="80" y1="115" x2="110" y2="140" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+          <line x1="110" y1="140" x2="130" y2="155" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+          <!-- left leg figure-4 (ankle on right knee) -->
+          <line x1="80" y1="115" x2="60" y2="130" stroke="#e85d00" stroke-width="5" stroke-linecap="round"/>
+          <line x1="60" y1="130" x2="108" y2="140" stroke="#e85d00" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="108" cy="140" r="5" fill="#e85d00" opacity="0.7"/>
+        </g>
+        <!-- floor -->
+        <line x1="20" y1="168" x2="140" y2="168" stroke="#444" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="duration">Hold: <span>45–60 sec / side</span></div>
+    <p class="tips">Cross ankle over opposite knee. Sit up tall or lean forward for more intensity. Deep glute burn = good.</p>
+  </div>
+
+  <!-- 5. SUPINE HAMSTRING STRETCH -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-num">5</div>
+      <div>
+        <h2>Supine Hamstring Stretch</h2>
+        <div class="target-muscle">Hamstrings</div>
+      </div>
+    </div>
+    <div class="figure-wrap">
+      <svg class="figure" viewBox="0 0 160 200">
+        <!-- lying flat -->
+        <circle cx="25" cy="110" r="12" fill="#e85d00"/>
+        <line x1="25" y1="122" x2="90" y2="125" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+        <!-- left leg flat -->
+        <line x1="90" y1="125" x2="140" y2="127" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+        <!-- right leg raised with towel -->
+        <g class="anim-ham">
+          <line x1="80" y1="124" x2="80" y2="68" stroke="#e85d00" stroke-width="5" stroke-linecap="round"/>
+          <!-- foot -->
+          <line x1="80" y1="68" x2="88" y2="62" stroke="#e85d00" stroke-width="4" stroke-linecap="round"/>
+          <!-- towel/strap -->
+          <path d="M 40 118 Q 60 80 80 68" stroke="#888" stroke-width="3" fill="none" stroke-dasharray="5 3"/>
+          <path d="M 40 118 Q 30 110 35 120" stroke="#888" stroke-width="3" fill="none"/>
+        </g>
+        <!-- floor -->
+        <line x1="10" y1="140" x2="150" y2="140" stroke="#444" stroke-width="2"/>
+        <!-- arms on floor -->
+        <line x1="40" y1="122" x2="20" y2="138" stroke="#ccc" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="duration">Hold: <span>45–60 sec / side</span></div>
+    <p class="tips">Lie on back, loop towel/belt around foot, pull leg toward you. Keep the other leg flat. Breathe into it — the leg will creep higher.</p>
+  </div>
+
+  <!-- 6. CHILD'S POSE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-num">6</div>
+      <div>
+        <h2>Child's Pose</h2>
+        <div class="target-muscle">Lower Back · Hips · Lats</div>
+      </div>
+    </div>
+    <div class="figure-wrap">
+      <svg class="figure" viewBox="0 0 160 200">
+        <g class="anim-childs">
+          <!-- kneeling, folded forward -->
+          <circle cx="118" cy="90" r="12" fill="#e85d00"/>
+          <!-- torso reaching forward -->
+          <line x1="118" y1="102" x2="78" y2="118" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+          <!-- hips / butt on heels -->
+          <ellipse cx="125" cy="128" rx="20" ry="12" fill="#333" stroke="#555" stroke-width="1"/>
+          <!-- legs folded under -->
+          <line x1="118" y1="118" x2="130" y2="138" stroke="#ccc" stroke-width="5" stroke-linecap="round"/>
+          <line x1="130" y1="138" x2="140" y2="128" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+          <!-- arms extended on floor -->
+          <line x1="78" y1="118" x2="42" y2="125" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+          <line x1="78" y1="118" x2="55" y2="118" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+          <!-- hands -->
+          <circle cx="38" cy="126" r="5" fill="#ccc"/>
+          <circle cx="50" cy="117" r="5" fill="#ccc"/>
+        </g>
+        <!-- floor -->
+        <line x1="10" y1="145" x2="150" y2="145" stroke="#444" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="duration">Hold: <span>60 sec</span></div>
+    <p class="tips">Wide knees, big toes touching, arms reach forward. Full exhale on every breath — let the hips sink heavier into the heels each time.</p>
+  </div>
+
+  <!-- 7. LEGS UP THE WALL -->
+  <div class="card" style="grid-column: 1 / -1; max-width: 480px; margin: 0 auto; width: 100%;">
+    <div class="card-header">
+      <div class="step-num">7</div>
+      <div>
+        <h2>Legs Up the Wall</h2>
+        <div class="target-muscle">Passive Recovery · Circulation</div>
+      </div>
+    </div>
+    <div class="figure-wrap" style="height:150px">
+      <svg class="figure" viewBox="0 0 220 160" style="width:100%;height:100%">
+        <!-- wall -->
+        <rect x="150" y="10" width="8" height="140" fill="#333" rx="2"/>
+        <!-- floor -->
+        <line x1="10" y1="140" x2="220" y2="140" stroke="#444" stroke-width="2"/>
+        <!-- body lying on floor -->
+        <circle cx="40" cy="120" r="13" fill="#e85d00"/>
+        <line x1="40" y1="133" x2="100" y2="136" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+        <!-- arms relaxed -->
+        <line x1="60" y1="133" x2="45" y2="148" stroke="#ccc" stroke-width="3" stroke-linecap="round"/>
+        <line x1="70" y1="134" x2="80" y2="148" stroke="#ccc" stroke-width="3" stroke-linecap="round"/>
+        <!-- legs up against wall - animated slight sway -->
+        <g class="anim-legs">
+          <line x1="100" y1="136" x2="148" y2="60" stroke="#e85d00" stroke-width="6" stroke-linecap="round"/>
+          <line x1="108" y1="134" x2="155" y2="55" stroke="#ccc" stroke-width="6" stroke-linecap="round"/>
+          <!-- feet -->
+          <line x1="148" y1="60" x2="158" y2="52" stroke="#e85d00" stroke-width="4" stroke-linecap="round"/>
+          <line x1="155" y1="55" x2="165" y2="48" stroke="#ccc" stroke-width="4" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="duration">Hold: <span>2–3 min</span></div>
+    <p class="tips">Sit sideways against wall, swing legs up. Totally passive. Gravity drains lactic acid from the legs back toward the heart. The most underrated recovery move — don't skip this one.</p>
+  </div>
+
+</div>
+
+<p style="text-align:center;color:#555;font-size:0.75rem;margin-top:40px;">Do in order · No bouncing · Breathe through each hold</p>
+
+</body>
+</html>
