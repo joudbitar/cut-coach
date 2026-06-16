@@ -58,7 +58,7 @@ export default function SetLogger({
           <div className="label" style={{ fontSize: 9 }}>RPE</div>
           <input className="input" name="rpe" inputMode="decimal" style={{ padding: "8px 6px", textAlign: "center" }} />
         </div>
-        <SubmitButton busy={busy} style={{ width: "auto", padding: "10px 14px" }}>+{nextSet}</SubmitButton>
+        <SubmitButton busy={busy} busyLabel={`+${nextSet}`} style={{ width: "auto", padding: "10px 14px" }}>+{nextSet}</SubmitButton>
       </form>
     </div>
   );
