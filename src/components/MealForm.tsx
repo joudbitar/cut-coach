@@ -1,21 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useFormAction } from "@/hooks/useFormAction";
+import SubmitButton from "@/components/SubmitButton";
 import { addMeal } from "@/app/actions";
 import { MEAL_SLOTS } from "@/lib/targets";
 
 export default function MealForm() {
-  const ref = useRef<HTMLFormElement>(null);
-  const [busy, setBusy] = useState(false);
+  const { formProps, busy } = useFormAction(addMeal);
   return (
     <form
-      ref={ref}
-      action={async (fd) => {
-        setBusy(true);
-        await addMeal(fd);
-        ref.current?.reset();
-        setBusy(false);
-      }}
+      {...formProps}
       style={{ display: "flex", flexDirection: "column", gap: 10 }}
     >
       <textarea
@@ -34,9 +28,9 @@ export default function MealForm() {
             </option>
           ))}
         </select>
-        <button className="btn" type="submit" disabled={busy} style={{ width: "auto", padding: "12px 22px" }}>
-          {busy ? "…" : "Log"}
-        </button>
+        <SubmitButton busy={busy} style={{ width: "auto", padding: "12px 22px" }}>
+          Log
+        </SubmitButton>
       </div>
       <p className="muted" style={{ fontSize: 11 }}>
         Macros stay <span className="pill-pending">pending</span> until enriched in Claude Code.
