@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { addWeight, addMeasurement, addPhoto } from "@/app/actions";
+import { useFormAction } from "@/hooks/useFormAction";
+import SubmitButton from "@/components/SubmitButton";
 import { navyBodyFatMale } from "@/lib/bf";
 import { PROFILE } from "@/lib/targets";
 import { localDateStr } from "@/lib/dates";
@@ -9,47 +11,33 @@ import { localDateStr } from "@/lib/dates";
 const today = () => localDateStr();
 
 export function WeightForm() {
-  const ref = useRef<HTMLFormElement>(null);
-  const [busy, setBusy] = useState(false);
+  const { formProps, busy } = useFormAction(addWeight);
   return (
-    <form
-      ref={ref}
-      action={async (fd) => {
-        setBusy(true);
-        await addWeight(fd);
-        ref.current?.reset();
-        setBusy(false);
-      }}
-      style={{ display: "flex", gap: 8, alignItems: "flex-end" }}
-    >
+    <form {...formProps} style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
       <div style={{ flex: 1 }}>
         <div className="label">Morning weight (kg)</div>
         <input className="input" name="weight_kg" inputMode="decimal" placeholder="77.4" required />
       </div>
       <input type="hidden" name="measured_on" value={today()} />
-      <button className="btn" disabled={busy} style={{ width: "auto", padding: "12px 20px" }}>{busy ? "…" : "Save"}</button>
+      <SubmitButton busy={busy} style={{ width: "auto", padding: "12px 20px" }}>Save</SubmitButton>
     </form>
   );
 }
 
 export function MeasurementForm() {
-  const ref = useRef<HTMLFormElement>(null);
   const [waist, setWaist] = useState("");
   const [neck, setNeck] = useState("");
-  const [busy, setBusy] = useState(false);
+  const { formProps, busy } = useFormAction(addMeasurement, {
+    onReset: () => {
+      setWaist("");
+      setNeck("");
+    },
+  });
   const preview =
     waist && neck ? navyBodyFatMale(Number(waist), Number(neck), PROFILE.heightCm) : null;
   return (
     <form
-      ref={ref}
-      action={async (fd) => {
-        setBusy(true);
-        await addMeasurement(fd);
-        ref.current?.reset();
-        setWaist("");
-        setNeck("");
-        setBusy(false);
-      }}
+      {...formProps}
       style={{ display: "flex", flexDirection: "column", gap: 10 }}
     >
       <div style={{ display: "flex", gap: 8 }}>
@@ -67,7 +55,7 @@ export function MeasurementForm() {
         <span className="muted" style={{ fontSize: 13 }}>
           Navy BF%: <strong style={{ color: "var(--fg)" }}>{preview != null ? `${preview}%` : "—"}</strong>
         </span>
-        <button className="btn" disabled={busy} style={{ width: "auto", padding: "10px 20px" }}>{busy ? "…" : "Save"}</button>
+        <SubmitButton busy={busy} style={{ width: "auto", padding: "10px 20px" }}>Save</SubmitButton>
       </div>
     </form>
   );
