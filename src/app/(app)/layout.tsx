@@ -3,7 +3,7 @@ import { logoutAction } from "@/app/actions";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="safe-bottom" style={{ padding: "14px 16px 0" }}>
+    <div className="safe-bottom" style={{ paddingTop: 14, paddingInline: 16 }}>
       <header
         style={{
           display: "flex",

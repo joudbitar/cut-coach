@@ -64,4 +64,4 @@ body {
   .pill-pending { color: var(--warn); font-size: 11px; border: 1px solid color-mix(in srgb, var(--warn) 40%, var(--border)); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
 }
 
-.safe-bottom { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+.safe-bottom { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
