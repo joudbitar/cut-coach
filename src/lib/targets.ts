@@ -7,22 +7,24 @@ export const PROFILE = {
   heightCm: 174,
   startWeightKg: 78,
   goalWeightKg: 73.5,
-  ffmKg: 65,
-  startBfPct: 16.5,
-  tdeeEstimate: 2400,
+  ffmKg: 60, // 78kg @ 23% BF
+  startBfPct: 23, // machine-measured (BIA), matches Navy tape calc
+  tdeeEstimate: 2340, // Garmin 11-day avg total_kcal (not a guess)
 };
 
 export const TARGETS = {
-  kcal: 1800,
-  protein: 180, // g
-  fat: 60, // g (range 55-65, floor 50)
+  // Deeper cut: ~1%/wk loss. 2340 TDEE − ~790 deficit ≈ 0.95%/wk at current
+  // ~4k steps; closer to 1.1%/wk if steps reach the 9500 target.
+  kcal: 1550,
+  protein: 185, // g — pushed up for the steeper deficit (muscle retention)
+  fat: 55, // g (range 50-60, floor 50)
   fatFloor: 50,
-  carb: 138, // g (range 130-145)
+  carb: 80, // g (range 70-90) — lower-carb to minimise water/bloat swings
   fiber: 30, // g (range 25-35)
-  snackBudgetKcal: 350, // ~300-400 earmarked
-  steps: 9500, // 9000-10000
+  snackBudgetKcal: 200,
+  steps: 9500, // 9000-10000 — the lever to eat more at the same deficit
   waterL: 3,
-  foodFloorKcal: 1700,
+  foodFloorKcal: 1400,
 };
 
 export const MEAL_SLOTS = [
