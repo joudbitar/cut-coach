@@ -13,7 +13,7 @@ Produce a polished, interactive HTML guide for a single exercise, rendered inlin
 
 2. **Personalize from cut-coach data.** This skill is for Joud, who is cutting. Pull context before generating:
    - Static profile + targets: read `src/lib/targets.ts` (or recall [[joud-profile-and-targets]] — cutting, 1800 kcal, 180g protein/day).
-   - Live data via Supabase MCP `execute_sql` on project `itmbuuwwqdxqgmjrkwdw` — recent `weights`, and `set_logs`/`workout_sessions`/`exercises` to see if he already trains this lift. See [[coach-pull-live-data]].
+   - Live data via the project REST helper — `python3 scripts/db.py get weights --order created_at.desc --limit 14`, and similarly `set_logs`/`workout_sessions`/`exercises` to see if he already trains this lift. (The Supabase MCP can no longer reach project `itmbuuwwqdxqgmjrkwdw` — it moved to the "Joud" org; use `scripts/db.py`, which hits the same DB over REST. See [[coach-pull-live-data]] and the root `CLAUDE.md`.)
    - Use it to tailor ONE short personalized note in the guide: suggested rep range for a cut (hypertrophy/strength-maintenance bias), where the lift fits his week, or a recovery caveat if Garmin shows poor sleep/HRV. Keep it to one card — don't bury the form instruction.
 
 3. **Build the figure.** Author a custom scrubbable side-view SVG for THIS movement using a joint-chain model driven by a range slider. Full technique, math, and per-movement geometry in [FIGURES.md](FIGURES.md). The figure is the centerpiece — build it every time, don't reuse RDL geometry blindly.
