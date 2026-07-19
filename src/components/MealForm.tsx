@@ -33,7 +33,7 @@ export default function MealForm() {
         </SubmitButton>
       </div>
       <p className="muted" style={{ fontSize: 11 }}>
-        Macros stay <span className="pill-pending">pending</span> until enriched in Claude Code.
+        Macros stay <span className="pill-pending">pending</span> until a Claude session fills them in.
       </p>
     </form>
   );

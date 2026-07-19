@@ -31,10 +31,10 @@ export default async function NutritionPage({
         <section className="card">
           <h2 style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>Awaiting macro enrichment</h2>
           <p className="muted" style={{ fontSize: 12, marginBottom: 8 }}>
-            Open this project in Claude Code and run the enrichment workflow (see README) to fill these in.
+            Run the enrichment workflow from a Claude session (see the README) to fill these in.
           </p>
           {pending.length === 0 ? (
-            <p className="muted" style={{ fontSize: 13, paddingTop: 8 }}>All caught up — no pending meals. 🎉</p>
+            <p className="muted" style={{ fontSize: 13, paddingTop: 8 }}>All caught up. No pending meals.</p>
           ) : (
             pending.map((m) => <MealItem key={m.id} meal={m} />)
           )}

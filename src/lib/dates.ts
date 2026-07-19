@@ -1,5 +1,6 @@
-// Owner-local date helpers. Defaults to Asia/Beirut; override with APP_TZ.
-export const APP_TZ = process.env.APP_TZ || "Asia/Beirut";
+// Local date helpers. Defaults to UTC; set APP_TZ to your IANA timezone so the
+// day rolls over at your local midnight.
+export const APP_TZ = process.env.APP_TZ || "UTC";
 
 // YYYY-MM-DD for a given instant in the owner's timezone.
 export function localDateStr(d: Date = new Date(), tz: string = APP_TZ): string {
