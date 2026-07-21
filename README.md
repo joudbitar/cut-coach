@@ -1,6 +1,6 @@
 # Cut Coach
 
-A single-user cut tracker that does its macro math on your own Claude, not a paid API.
+A nutrition and training tracker that does its macro math on your own Claude, not a paid API.
 
 Plenty of people already paste meals into Claude to count calories, because it's the fastest way to do it. What Claude doesn't have is a UI that remembers your goals, or anywhere to keep the history. The apps that wrap that loop for you all call the Claude API, which costs money per meal. Cut Coach queues each meal for the Claude subscription you already pay for, renders it against your targets, and stacks Garmin, steps, training, and health on top.
 
@@ -13,8 +13,6 @@ It runs as one PIN-locked app for one person. You put your stats in a single con
 </p>
 
 ## How it works
-
-Four screens, one PIN.
 
 Today is where food goes. You log a meal as free text and it saves right away with the macros left pending. Once Claude fills the numbers in, the kcal and protein rings and the remaining-macros strip update. Protein and fat are floors, carbs are a ceiling not a target, and there's a small snack budget on top of the day.
 
